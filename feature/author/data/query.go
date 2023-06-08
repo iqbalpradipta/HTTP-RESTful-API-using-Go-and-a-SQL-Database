@@ -28,9 +28,9 @@ func (r *authorData)SelectAllAuthor() ([]author.AuthorCore, error) {
 	return dataCore, nil
 }
 
-func (r *authorData)SelectAuthorByName(name string) (author.AuthorCore, error)  {
+func (r *authorData)SelectAuthorById(id int) (author.AuthorCore, error)  {
 	var data Author
-	tx := r.db.First(&data, name)
+	tx := r.db.First(&data, id)
 	if tx.Error != nil {
 		return author.AuthorCore{}, tx.Error
 	}

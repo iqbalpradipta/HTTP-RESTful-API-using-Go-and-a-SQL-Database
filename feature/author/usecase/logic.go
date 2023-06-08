@@ -21,8 +21,8 @@ func (a *authorUseCase) GetAllAuthor() ([]author.AuthorCore, error) {
 	return result, err
 }
 
-func (a *authorUseCase) GetAuthorByName(name string) (data author.AuthorCore, err error) {
-	data, err = a.authorData.SelectAuthorByName(name)
+func (a *authorUseCase) GetAuthorById(id int) (data author.AuthorCore, err error) {
+	data, err = a.authorData.SelectAuthorById(id)
 	if err != nil {
 		return data, err
 	}
