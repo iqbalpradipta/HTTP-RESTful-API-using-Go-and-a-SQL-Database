@@ -20,6 +20,10 @@ func NewHandler(e *echo.Echo, useCase author.IusecaseInterface){
 	}
 
 	e.GET("/author", handler.GetAllAuthor)
+	e.GET("/auhtor/:id", handler.GetAuthorById)
+	e.POST("/author", handler.CreateAuthor)
+	e.PUT("/author/:id", handler.UpdateAuthor)
+	e.DELETE("/author/:id", handler.DeleteAuthor)
 
 }
 
