@@ -20,7 +20,7 @@ func NewHandler(e *echo.Echo, useCase author.IusecaseInterface){
 	}
 
 	e.GET("/author", handler.GetAllAuthor)
-	e.GET("/auhtor/:id", handler.GetAuthorById)
+	e.GET("/author/:id", handler.GetAuthorById)
 	e.POST("/author", handler.CreateAuthor)
 	e.PUT("/author/:id", handler.UpdateAuthor)
 	e.DELETE("/author/:id", handler.DeleteAuthor)
@@ -43,13 +43,13 @@ func (d *AuthorDelivery)GetAuthorById(c echo.Context) error {
 	}
 	result, err := d.AuthorUseCase.GetAuthorById(idConv)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponseHelper("error get param"))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponseHelper("error get data"))
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponseDataHelper("success get data", fromCore(result)))
 }
 
 func (d *AuthorDelivery)CreateAuthor(c echo.Context) error {
-	var dataRequest authorRequest
+	var dataRequest AuthorRequest
 	errBind := c.Bind(&dataRequest)
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponseHelper("failed to Bind data"))
@@ -64,8 +64,8 @@ func (d *AuthorDelivery)CreateAuthor(c echo.Context) error {
 func (d *AuthorDelivery)UpdateAuthor(c echo.Context) error {
 	id := c.Param("id")
 	idConv, errConv := strconv.Atoi(id)
-	if errConv != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponseHelper("error param"))
+	if errConv != nil || idConv == 0{
+		return c.JSON(http.StatusBadRequest, helper.FailedResponseHelper("error update by param"))
 	}
 
 	idToken := middleware.ExtractToken(c)
@@ -73,7 +73,7 @@ func (d *AuthorDelivery)UpdateAuthor(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, helper.FailedResponseHelper("unauthorized"))
 	}
 
-	var dataUpdate authorRequest
+	var dataUpdate AuthorRequest
 	errBind := c.Bind(&dataUpdate)
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponseHelper("error bind data"))
@@ -92,7 +92,7 @@ func (d *AuthorDelivery)DeleteAuthor(c echo.Context) error {
 	if errConv != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponseHelper("error param")) 
 	}
-	var dataRemove authorRequest
+	var dataRemove AuthorRequest
 	row, err := d.AuthorUseCase.DeleteAuthor(idConv, toCore(dataRemove))
 	if err != nil || row == 0{
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponseHelper("error delete data"))

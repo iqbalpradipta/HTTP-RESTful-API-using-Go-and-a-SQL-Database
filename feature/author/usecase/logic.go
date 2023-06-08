@@ -39,25 +39,17 @@ func (a *authorUseCase) CreateAuthor(data author.AuthorCore) (int, error) {
 }
 
 func (a *authorUseCase) UpdateAuthor(id int, update author.AuthorCore) (int, error) {
-	if update.ID == 0 {
-		return -1, errors.New("id not found")
-	}
-
 	data, err := a.authorData.PutAuthor(id, update)
 	if err != nil {
-		return data, err
+		return 0, errors.New("author failed to update")
 	}
-	return data, nil
+	return data, err
 }
 
 func (a *authorUseCase) DeleteAuthor(id int, delete author.AuthorCore) (int, error) {
-	if delete.ID == 0 {
-		return -1, errors.New("id not found")
-	}
-	
 	data, err := a.authorData.DelAuthor(id, delete)
 	if err != nil {
-		return data, err
+		return data, errors.New("author failed to delete")
 	}
-	return data, nil
+	return data, err
 }
