@@ -7,8 +7,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitMigrate(db *gorm.DB)  {
-	db.AutoMigrate(authorData.Author{})
-	db.AutoMigrate(bookData.Book{})
-	db.AutoMigrate(userData.User{})
+func InitMigrate(db *gorm.DB) {
+	db.AutoMigrate(&authorData.Author{})
+	db.AutoMigrate(&bookData.Book{})
+	db.AutoMigrate(&userData.User{})
+
+	db.SetupJoinTable(&authorData.Author{}, "Books", &authorData.Author{})
+	db.SetupJoinTable(&bookData.Book{}, "Authors", &authorData.Author{})
 }

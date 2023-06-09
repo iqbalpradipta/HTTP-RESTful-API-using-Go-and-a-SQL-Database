@@ -26,7 +26,7 @@ func (r *userData)RegisterUser(data user.UserCore) (int, error)  {
 
 func (r *userData) AuthUser(email string) (user.UserCore, error) {
 	data := User{}
-	tx := r.db.Model(&User{}).Where("email = ?", email).First(&data)
+	tx := r.db.Where("email = ?", email).First(&data)
 	if tx.Error != nil {
 		return user.UserCore{}, tx.Error
 	}

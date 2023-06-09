@@ -5,7 +5,7 @@ import "github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/fe
 type userRequest struct {
 	Name		string	`json:"name" form:"name"`
 	Email	 	string 	`json:"email" form:"email" validate:"required,email"`
-	Password 	string	`json:"password" form:"password" validate:"require"`
+	Password 	string	`json:"password" form:"password" validate:"required"`
 }
 
 func toCore(data userRequest) user.UserCore {
