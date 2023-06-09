@@ -19,11 +19,11 @@ func NewHandler(e *echo.Echo, useCase author.IusecaseInterface){
 		AuthorUseCase: useCase,
 	}
 
-	e.GET("/author", handler.GetAllAuthor)
-	e.GET("/author/:id", handler.GetAuthorById)
-	e.POST("/author", handler.CreateAuthor)
-	e.PUT("/author/:id", handler.UpdateAuthor)
-	e.DELETE("/author/:id", handler.DeleteAuthor)
+	e.GET("/author", handler.GetAllAuthor, middleware.JWTMiddleware())
+	e.GET("/author/:id", handler.GetAuthorById, middleware.JWTMiddleware())
+	e.POST("/author", handler.CreateAuthor, middleware.JWTMiddleware())
+	e.PUT("/author/:id", handler.UpdateAuthor, middleware.JWTMiddleware())
+	e.DELETE("/author/:id", handler.DeleteAuthor, middleware.JWTMiddleware())
 
 }
 

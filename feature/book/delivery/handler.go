@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/feature/book"
-	// "github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/middleware"
+	"github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/middleware"
 	"github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/utils/helper"
 	"github.com/labstack/echo/v4"
 )
@@ -19,11 +19,11 @@ func NewHandler(e *echo.Echo, useCase book.IusecaseInterface){
 		BookUseCase: useCase,
 	}
 
-	e.GET("/book", handler.GetAllBook)
-	e.GET("/book/:id", handler.GetBookById)
-	e.POST("/book", handler.CreateBook)
-	e.PUT("/book/:id", handler.UpdateBook)
-	e.DELETE("/book/:id", handler.DeleteBook)
+	e.GET("/book", handler.GetAllBook, middleware.JWTMiddleware())
+	e.GET("/book/:id", handler.GetBookById, middleware.JWTMiddleware())
+	e.POST("/book", handler.CreateBook, middleware.JWTMiddleware())
+	e.PUT("/book/:id", handler.UpdateBook, middleware.JWTMiddleware())
+	e.DELETE("/book/:id", handler.DeleteBook, middleware.JWTMiddleware())
 
 }
 
@@ -68,10 +68,10 @@ func (d *BookDelivery)UpdateBook(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponseHelper("error update by param"))
 	}
 
-	// idToken := middleware.ExtractToken(c)
-	// if idToken != idConv {
-	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponseHelper("unauthorized"))
-	// }
+	idToken := middleware.ExtractToken(c)
+	if idToken != idConv {
+		return c.JSON(http.StatusUnauthorized, helper.FailedResponseHelper("unauthorized"))
+	}
 
 	var dataUpdate bookRequest
 	errBind := c.Bind(&dataUpdate)
