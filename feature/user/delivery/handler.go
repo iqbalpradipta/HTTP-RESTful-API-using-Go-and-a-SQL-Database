@@ -18,7 +18,7 @@ func NewHandler(e *echo.Echo, useCase user.IusecaseInterface) {
 	}
 
 	e.POST("/register", handler.CreateUser)
-	e.POST("/user", handler.LoginUser)
+	e.POST("/login", handler.LoginUser)
 }
 
 
@@ -44,7 +44,7 @@ func (d *UserDelivery)LoginUser(c echo.Context) error {
 		return c.JSON(http.StatusBadGateway, helper.FailedResponseHelper(err.Error()))
 	}
 
-	loginCore := toCore(loginRequest)
+	loginCore := toCoreLogin(loginRequest)
 	token, err := d.userUseCase.LoginUser(loginCore)
 
 	if err != nil {
