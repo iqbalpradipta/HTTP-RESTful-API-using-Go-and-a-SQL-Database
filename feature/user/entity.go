@@ -1,15 +1,21 @@
-// package user
+package user
 
-// import (
-// 	"github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/feature/author"
-// 	"github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/feature/book"
-// )
+type UserCore struct {
+	ID       int
+	Name     string
+	Email	 string 
+	Password string
+	BookId	 int
+	AuthorId int
+}
 
-// type UserCore struct {
-// 	ID       uint
-// 	Name     string
-// 	Password string
-// 	Book     []book.BookCore    `gorm:"foreignkey:ID"`
-// 	Author   []author.AuthorCore `gorm:"foreignkey:ID"`
-// }
+type IusecaseInterface interface {
+	CreateUser(data UserCore) (row int, err error)
+	LoginUser(data UserCore) (string, error)
+}
+
+type IdataInterface interface {
+	RegisterUser(data UserCore) (row int, err error)
+	AuthUser(email string) (userEntity UserCore, err error)
+}
 
