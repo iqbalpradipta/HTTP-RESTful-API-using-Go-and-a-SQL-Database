@@ -11,6 +11,10 @@ import (
 	bookData "github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/feature/book/data"
 	bookDelivery "github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/feature/book/delivery"
 	bookUsecase "github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/feature/book/usecase"
+
+	userData "github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/feature/user/data"
+	userDelivery "github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/feature/user/delivery"
+	userUsecase "github.com/iqbalpradipta/HTTP-RESTful-API-using-Go-and-a-SQL-Database/feature/user/usecase"
 )
 
 func InitFactory(e *echo.Echo, db *gorm.DB)  {
@@ -21,4 +25,8 @@ func InitFactory(e *echo.Echo, db *gorm.DB)  {
 	bookDataFactory := bookData.NewQuery(db)
 	bookUsecaseFactory := bookUsecase.NewLogic(bookDataFactory)
 	bookDelivery.NewHandler(e, bookUsecaseFactory)
+
+	userDataFactory := userData.NewQuery(db)
+	userUsecaseFactory := userUsecase.NewLogic(userDataFactory)
+	userDelivery.NewHandler(e, userUsecaseFactory)
 }
